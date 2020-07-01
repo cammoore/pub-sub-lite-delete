@@ -1,2 +1,7 @@
-# matrp
-2020 rebuild of the meteor-application-template-react-production
+# Example pub-sub-lite Meteor application
+
+## Installation
+
+1. Install [Meteor](https://www.meteor.com/install).
+
+2. Clone this repo 

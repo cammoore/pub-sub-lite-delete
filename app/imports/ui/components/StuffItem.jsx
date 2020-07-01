@@ -1,16 +1,19 @@
 import React from 'react';
 import { Button, Table } from 'semantic-ui-react';
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import { stuffRemoveItMethod } from '../../api/stuff/StuffCollection.methods';
+import { Stuffs } from '../../api/stuff/StuffCollection';
 
 const handleClick = (props) => () => {
-  stuffRemoveItMethod.call(props.stuff._id, (error, result) => {
+  stuffRemoveItMethod.call(props.stuff._id, (error) => {
     if (error) {
       swal('Error', error.message, 'error');
     } else {
       swal('Success', 'Item deleted successfully', 'success');
+      console.log(`${Meteor.isServer ? 'Server' : 'Client'}: After stuff removeIt have ${Stuffs.count()} items.`);
     }
   });
 }

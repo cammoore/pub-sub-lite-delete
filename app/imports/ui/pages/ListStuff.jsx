@@ -5,6 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { stuffPublicationNames, Stuffs } from '../../api/stuff/StuffCollection';
 import StuffItem from '../components/StuffItem';
+import AddStuff from './AddStuff';
 
 const ListStuff = (props) => {
   if (props.ready) {
@@ -25,6 +26,7 @@ const ListStuff = (props) => {
               {props.stuffs.map((stuff) => <StuffItem key={stuff._id} stuff={stuff} />)}
             </Table.Body>
           </Table>
+          <AddStuff/>
         </Container>
     );
   }

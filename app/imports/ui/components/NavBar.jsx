@@ -7,9 +7,10 @@ const NavBar = (props) => {
   return (
       <Menu style={menuStyle} attached="top" borderless inverted>
         <Menu.Item as={NavLink} activeClassName="" exact to="/">
-          <Header inverted as='h1'>meteor-application-template</Header>
+          <Header inverted as='h1'>pub-sub-lite delete</Header>
         </Menu.Item>
         <Menu.Item as={NavLink} activeClassName="active" exact to="/add" key='add'>Add Stuff</Menu.Item>
+        <Menu.Item as={NavLink} activeClassName="active" exact to="/" key='list'>List Stuff</Menu.Item>
       </Menu>
   );
 };
