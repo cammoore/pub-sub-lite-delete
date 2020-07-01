@@ -2,13 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { check } from 'meteor/check';
 import { _ } from 'meteor/underscore';
-import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 
 export const stuffConditions = ['excellent', 'good', 'fair', 'poor'];
 export const stuffPublicationNames = {
   stuff: 'Stuff',
-  stuffAdmin: 'StuffAdmin',
 };
 
 class StuffCollection extends BaseCollection {
@@ -16,7 +14,6 @@ class StuffCollection extends BaseCollection {
     super('Stuffs', new SimpleSchema({
       name: String,
       quantity: Number,
-      owner: String,
       condition: {
         type: String,
         allowedValues: stuffConditions,
@@ -29,15 +26,13 @@ class StuffCollection extends BaseCollection {
    * Defines a new Stuff item.
    * @param name the name of the item.
    * @param quantity how many.
-   * @param owner the owner of the item.
    * @param condition the condition of the item.
    * @return {String} the docID of the new document.
    */
-  define({ name, quantity, owner, condition }) {
+  define({ name, quantity, condition }) {
     const docID = this._collection.insert({
       name,
       quantity,
-      owner,
       condition,
     });
     return docID;
@@ -74,7 +69,6 @@ class StuffCollection extends BaseCollection {
     const doc = this.findDoc(name);
     check(doc, Object);
     this._collection.remove(doc._id);
-    return true;
   }
 
   /**
@@ -86,19 +80,7 @@ class StuffCollection extends BaseCollection {
       const inst = this;
       /** This subscription publishes only the documents associated with the logged in user */
       Meteor.publishLite(stuffPublicationNames.stuff, function publish() {
-        if (this.userId) {
-          const username = Meteor.users.findOne(this.userId).username;
-          return inst._collection.find({ owner: username });
-        }
-        return this.ready();
-      });
-
-      /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
-      Meteor.publish(stuffPublicationNames.stuffAdmin, function publish() {
-        if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
-          return inst._collection.find();
-        }
-        return this.ready();
+        return inst._collection.find();
       });
     }
   }
@@ -110,7 +92,6 @@ class StuffCollection extends BaseCollection {
   subscribe() {
     if (Meteor.isClient) {
       Meteor.subscribeLite(stuffPublicationNames.stuff);
-      Meteor.subscribeLite(stuffPublicationNames.stuffAdmin);
     }
   }
 

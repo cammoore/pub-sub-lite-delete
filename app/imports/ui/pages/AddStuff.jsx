@@ -22,8 +22,7 @@ const formSchema = new SimpleSchema2Bridge(schema);
 
 const submit = (data, formRef) => {
   const { name, quantity, condition } = data;
-  const owner = Meteor.user().username;
-  stuffDefineMethod.call({ name, quantity, condition, owner },
+  stuffDefineMethod.call({ name, quantity, condition },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');

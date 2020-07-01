@@ -31,7 +31,6 @@ export const stuffUpdateMethod = new ValidatedMethod({
   validate: null,
   run(updateData) {
     Stuffs.update(updateData.id, updateData);
-    return true;
   },
 });
 
@@ -41,6 +40,8 @@ export const stuffRemoveItMethod = new ValidatedMethod({
   applyOptions: { enhanced: true },
   validate: null,
   run(instance) {
-    return Stuffs.removeIt(instance);
+    console.log(`${Meteor.isServer ? 'Server' : 'Client'}: Before stuff removeIt have ${Stuffs.count()} items.`);
+    Stuffs.removeIt(instance);
+    console.log(`${Meteor.isServer ? 'Server' : 'Client'}: After stuff removeIt have ${Stuffs.count()} items.`);
   },
 });
